@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Forecast {
-    private List<TimeEntry> moscow;
-    private List<TimeEntry> novosibirsk;
-    private List<TimeEntry> omsk;
+    private List<CityWeather> moscow;
+    private List<CityWeather> novosibirsk;
+    private List<CityWeather> omsk;
 }
