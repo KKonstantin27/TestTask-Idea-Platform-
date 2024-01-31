@@ -19,7 +19,7 @@ public class FlightsStatusCheckerService {
     private List<Flight> flights;
     private static final int WIND_LIMIT = 30;
     private static final int VISIBILITY_LIMIT = 200;
-    private static final String PATH_TO_JSON = "src/main/resources/flights_and_forecast.json";
+    private static String pathToJson = "src/main/resources/flights_and_forecast.json";
 
     private final FlightsStatusCheckerUtil flightsStatusCheckerUtil;
 
@@ -56,12 +56,16 @@ public class FlightsStatusCheckerService {
     private void readFromJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String json = new String(Files.readAllBytes(Path.of(PATH_TO_JSON)));
+            String json = new String(Files.readAllBytes(Path.of(pathToJson)));
             JSONData JSONData = objectMapper.readValue(json, JSONData.class);
             flights = JSONData.getFlights();
             forecast = JSONData.getForecast();
         } catch (IOException e) {
             throw new RuntimeException("File not found");
         }
+    }
+
+    public static void setPathToJson(String pathToJson) {
+        FlightsStatusCheckerService.pathToJson = pathToJson;
     }
 }
