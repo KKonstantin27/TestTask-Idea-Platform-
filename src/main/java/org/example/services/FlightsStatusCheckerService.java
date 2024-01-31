@@ -9,9 +9,10 @@ import org.example.enums.FlightStatus;
 import org.example.enums.TimeOffset;
 import org.example.utils.FlightsStatusCheckerUtil;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class FlightsStatusCheckerService {
@@ -19,7 +20,7 @@ public class FlightsStatusCheckerService {
     private List<Flight> flights;
     private static final int WIND_LIMIT = 30;
     private static final int VISIBILITY_LIMIT = 200;
-    private static String pathToJson = "src/main/resources/flights_and_forecast.json";
+    private static String pathToJson = "/flights_and_forecast.json";
 
     private final FlightsStatusCheckerUtil flightsStatusCheckerUtil;
 
@@ -55,9 +56,15 @@ public class FlightsStatusCheckerService {
 
     private void readFromJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String json = new String(Files.readAllBytes(Path.of(pathToJson)));
-            JSONData JSONData = objectMapper.readValue(json, JSONData.class);
+        try (InputStream is = getClass().getResourceAsStream(pathToJson);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+
+            String currentLine;
+            StringBuilder json = new StringBuilder();
+            while ((currentLine = reader.readLine()) != null) {
+                json.append(currentLine);
+            }
+            JSONData JSONData = objectMapper.readValue(json.toString(), JSONData.class);
             flights = JSONData.getFlights();
             forecast = JSONData.getForecast();
         } catch (IOException e) {

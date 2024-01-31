@@ -16,7 +16,7 @@ public class FlightsStatusCheckerServiceTest {
 
     @BeforeAll
     public static void initTestEnv() {
-        FlightsStatusCheckerService.setPathToJson("src/test/resources/flights_and_forecast.json");
+        FlightsStatusCheckerService.setPathToJson("/flights_and_forecast_test.json");
         flightsStatusCheckerService = new FlightsStatusCheckerService();
         System.setOut(new PrintStream(outContent));
     }
